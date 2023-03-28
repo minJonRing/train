@@ -1,0 +1,15 @@
+.menu {
+  font-style: normal;
+  list-style: none;
+  overflow: hidden;
+  transition-duration: 600ms;
+  .menu-item {
+    .menu-item-link {
+      display: block;
+      padding: 6px 12px;
+      & + .menu {
+        padding: 0 12px;
+      }
+    }
+  }
+}

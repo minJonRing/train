@@ -1,0 +1,20 @@
+import * as React from "react";
+import { Box, Grid } from "@mui/material";
+import { useTrain } from "services/useHooks";
+
+import Item from "./item";
+const Train = () => {
+  const { data } = useTrain();
+  return (
+    <Box sx={{ p: 1 }}>
+      <Grid container spacing={1}>
+        {data?.data?.data.map((el, index) => (
+          <Grid item xs={6} sm={6} md={4} key={index}>
+            <Item el={el} />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
+export default Train;
