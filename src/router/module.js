@@ -1,6 +1,7 @@
 import { lazy } from "react";
 // template
 import Layout from "layout/index";
+import Outlet from "modules/outlet";
 // router
 import Logout from "../modules/logout/router";
 
@@ -81,15 +82,18 @@ export const syncRoute = [
         element: lazy(() => import("modules/exam/index")),
       },
       {
-        path: "paper/:id",
+        path: "imitate/:examId",
+        pathname: "ExamTest",
+        element: lazy(() => import("modules/exam/imitate/index")),
+      },
+      {
+        path: "paper/:examId/:id",
         pathname: "ExamPaper",
-        id: "89",
         element: lazy(() => import("modules/exam/paper/index")),
       },
       {
-        path: "answer/:id",
+        path: "answer/:examId/:id",
         pathname: "ExamAnswer",
-        id: "89",
         element: lazy(() => import("modules/exam/answer/index")),
       },
     ],

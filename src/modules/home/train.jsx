@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -12,8 +12,8 @@ import { useSignTrain } from "services/useHooks";
 import { useNavigate } from "react-router-dom";
 
 const Train = () => {
-  const navigate = useNavigate();
   const { data } = useSignTrain();
+  const navigate = useNavigate();
   return (
     <Card variant="outlined" sx={{ height: "235px" }}>
       <CardContent>
@@ -23,9 +23,9 @@ const Train = () => {
         <Typography variant="h6" sx={{ textAlign: "center", pt: 4 }}>
           报名课程：
           <span style={{ color: "#1976d2", fontSize: "30px" }}>
-            {data?.data.signCourseCount || 0}
-          </span>{" "}
-          场
+            {data?.data?.signCourseCount || 0}
+          </span>
+          {/* 场 */}
         </Typography>
       </CardContent>
       <CardActions
@@ -33,7 +33,7 @@ const Train = () => {
       >
         <Button
           variant="contained"
-          disabled={!+data?.data.signCourseCount}
+          disabled={!+data?.data?.signCourseCount}
           onClick={() => navigate("/train")}
         >
           详情

@@ -29,6 +29,11 @@ export const useSignExam = createQuery({
   queryKey: ["signExam"],
   queryFn: ({ apis }) => apis.signExam(),
 });
+
+export const useCertificateInfo = createQuery({
+  queryKey: ["certificateInfo"],
+  queryFn: ({ apis,variables }) => apis.getCertificateInfo(variables),
+});
 // train
 export const useTrain = createQuery({
   queryKey: ["train"],
@@ -72,4 +77,9 @@ export const useExamPaper = createQuery({
 export const useExamPaperDetail = createQuery({
   queryKey: ["examPaperDetail"],
   queryFn: ({ apis, variables }) => apis.getExamPaperDetail(variables),
+});
+
+export const useExamPaperAnswerDetail = createQuery({
+  queryKey: ["examPaperDetail"],
+  queryFn: ({ apis, variables }) => apis.getExamPaperAnswerDetail(variables),
 });

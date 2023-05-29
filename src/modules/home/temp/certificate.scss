@@ -1,0 +1,150 @@
+/* 注释样式为打印专用 */
+/* @page {
+    size: A4 landscape;
+    margin: 0;
+    padding: 0;
+} */
+
+.page {
+  /* margin-top:100px; */
+  page-break-after: always;
+  .layout {
+    width: 100%;
+    height: 100%;
+    .row {
+      display: flex;
+    }
+    .row .col {
+      vertical-align: top;
+      width: 50%;
+      text-align: center;
+    }
+    .col {
+      width: 50%;
+      .title,
+      .sub-title {
+        font-size: 32px;
+        font-family: NSimSun, serif;
+        font-weight: bold;
+        color: #CB413E;
+        display: block;
+        text-align: center;
+      }
+      .sub-title {
+        margin: 12px;
+      }
+      .photo {
+        width: 127px;
+        height: 145px;
+        display: inline-block;
+        margin: auto;
+        .photo-img {
+          max-width: 127px;
+          max-height: 145px;
+          object-fit: contain;
+          border: 1px solid #333;
+        }
+      }
+      .form {
+        width: 90%;
+        margin: auto;
+        transform: translateX(10px);
+        .form-item {
+          display: flex;
+          align-items: center;
+          line-height: 1.5em;
+          .form-item-title {
+            line-height: 1.5em;
+            width: 100px;
+            font-size: 16px;
+            font-family: KaiTi, serif;
+            font-weight: bold;
+            color: #111111;
+            word-spacing: 1.7em;
+            text-align: right;
+          }
+        
+          .form-item-text {
+            line-height: 1.5em;
+            width: 267px;
+            font-size: 16px;
+            font-family: SimSun, serif;
+            font-weight: bold;
+            color: #111111;
+            text-align: left;
+          }
+        }
+      }
+      // table
+      .sign-table-title {
+        font-size: 18px;
+        font-family: SimSun, serif;
+        font-weight: 400;
+        color: #000000;
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+      }
+      .sign-table {
+        width: 90%;
+        margin: auto;
+        border-collapse: collapse;
+        border: 1px solid #333333;
+        table-layout: fixed;
+      }
+    }
+  }
+}
+
+
+.page .sign-table .time-line {
+  font-size: 12px;
+  font-family: SimSun, serif;
+  text-align: center;
+}
+
+.page .sign-table .year {
+  display: inline-block;
+  width: 22px;
+  text-align: right;
+  padding: 0 2px;
+}
+
+.page .sign-table .month,
+.page .sign-table .day {
+  display: inline-block;
+  width: 10px;
+  padding: 0 2px;
+}
+
+.page .sign-table .score {
+  text-align: center;
+}
+
+.page .sign-table tr,
+.page .sign-table th,
+.page .sign-table td {
+  border: 1px solid #333333;
+}
+
+.page .sign-table th,
+.page .sign-table td {
+  padding: 18px 5px 18px 5px;
+}
+
+.page .sign-table th {
+  font-size: 18px;
+  font-family: SimSun, serif;
+  font-weight: bold;
+  color: #000000;
+}
+
+.page .sign-table td {
+  text-align: right;
+  font-size: 18px;
+  font-family: KaiTi, serif;
+  font-weight: bold;
+  color: #000000;
+}

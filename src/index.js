@@ -11,10 +11,15 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryConfig = new QueryClient({
   defaultOptions: {
     queries: {
+      // “等待”代码加载
       suspense: true,
+      // 窗口获得焦点时重新获取数据
       refetchOnWindowFocus: false,
+      // 是否错误捕获
       useErrorBoundary: true,
+      // 过期时间
       staleTime: 5 * 60 * 1000,
+      // 失败重试 false不重试 true 无限重试 number设置重试次数
       retry: 0,
     },
   },
@@ -28,7 +33,7 @@ root.render(
   // <React.StrictMode>
   <QueryClientProvider client={queryConfig}>
     <App />
-    <ReactQueryDevtools />
+    {/* <ReactQueryDevtools /> */}
   </QueryClientProvider>
   // </React.StrictMode>
 );

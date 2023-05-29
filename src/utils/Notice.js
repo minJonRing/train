@@ -10,6 +10,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { useRootStore } from "store/index";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
+import { removeToken } from "utils/token";
 
 export const NoticeRef = createRef();
 
@@ -24,32 +25,28 @@ const Notice = observer(() => {
   const time = useRef(null);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("info");
-  const [origin, setOrigin] = useState({
-    vertical: "top",
-    horizontal: "right",
-  });
   //! Bug  Snackbar 设置自动隐藏 功能需要提供 onClose 事件 但是点击页面一下就会触发onClose事件 无奈自己实现
   useEffect(() => {
     if (state) {
       time.current = setTimeout(() => {
         setState(false);
-      }, 3000);
+      }, 2000);
     }
     return () => {
       clearTimeout(time.current);
       time.current = null;
     };
-  }, [state, type, origin]);
+  }, [state, type]);
   const logout = useCallback(() => {
     changeToken("");
+    removeToken();
     navigate("/login");
   });
 
   const close = useCallback(() => setState(false), []);
 
-  const open = useCallback(({ message, type, origin }) => {
+  const open = useCallback(({ message, type }) => {
     type && setType(type);
-    origin && setOrigin(origin);
     setMessage(message);
     setState(true);
   }, []);
@@ -61,7 +58,14 @@ const Notice = observer(() => {
   ]);
 
   return (
-    <Snackbar message={message} open={state} anchorOrigin={origin}>
+    <Snackbar
+      message={message}
+      open={state}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+    >
       <Alert onClose={close} severity={type}>
         {message}
       </Alert>

@@ -1,5 +1,5 @@
 import { useState, createRef, useImperativeHandle, useCallback } from "react";
-import { Backdrop, LinearProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export const LoadingRef = createRef();
 
@@ -20,13 +20,13 @@ const Loading = () => {
     <Backdrop
       sx={{
         display: "block",
-        // color: "#fff",
         backgroundColor: "rgba(255,255,255,.7)",
+        display: "flex",
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
       open={state}
     >
-      <LinearProgress sx={{ width: "100%" }} />
+      <CircularProgress />
     </Backdrop>
   );
 };

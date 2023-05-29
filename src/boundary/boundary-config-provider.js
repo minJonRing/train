@@ -12,7 +12,6 @@ export const useBoundaryConfig = () => useContext(Context);
 
 export const BoundaryConfigProvider = (props) => {
   const { children, pendingFallback, FallbackComponent, onError } = props;
-
   const config = useMemo(
     () => ({
       pendingFallback,

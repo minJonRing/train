@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Box, Grid } from "@mui/material";
 import UserBase from "./userBase";
 import Train from "./train";
@@ -7,7 +7,7 @@ import NextExam from "./nextExam";
 import Certificate from "./certificate";
 export default () => {
   return (
-    <Box sx={{ p: 1 }}>
+    <Box sx={{ p: 1, backgroundColor: "#f5f5f5" }}>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={12} md={6}>
           <UserBase />

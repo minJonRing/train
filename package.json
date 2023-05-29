@@ -19,6 +19,7 @@
     "dayjs": "^1.11.7",
     "framer-motion": "^9.0.2",
     "js-md5": "^0.7.3",
+    "lodash": "^4.17.21",
     "mobx": "^6.7.0",
     "mobx-react": "^7.6.0",
     "notistack": "^2.0.8",
@@ -42,8 +43,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "build": "react-scripts build",
+    "build:prod": "dotenv -e .env.production react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -64,5 +66,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.2.1",
+    "react-app-rewired": "^2.2.1"
   }
 }

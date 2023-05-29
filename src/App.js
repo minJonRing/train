@@ -16,7 +16,7 @@ import {
   BoundaryConfigProvider,
   ErrorFallback,
 } from "boundary/index";
-import Loader from "utils/Loader";
+import PageLoad from "utils/PageLoad/index";
 // 消息提示
 import Notice from "utils/Notice";
 // 请求加载
@@ -26,27 +26,18 @@ dayjs.extend(isBetween);
 
 function App() {
   const theme = createTheme({
-    overrides: {
+    components: {
       // 样式表的名字 ⚛️
       MuiTypography: {
+        styleOverrides: {},
         // 规则的名字
         color: {
           // 一些 CSS
-          primary: {
-            color: "#1976d2",
-          },
-          secondary: {
-            color: "#9c27b0",
-          },
-          error: {
-            color: "#1976d2",
-          },
-          success: {
-            color: "#2e7d32",
-          },
-          warning: {
-            color: "#ed6c02",
-          },
+          primary: "#1976d2",
+          secondary: "#9c27b0",
+          error: "#1976d2",
+          success: "#2e7d32",
+          warning: "#ed6c02",
         },
       },
     },
@@ -55,10 +46,13 @@ function App() {
     // 边界错误处理
     <BoundaryConfigProvider
       pendingFallback={null}
-      FallbackComponent={ErrorFallback}
-      onError={(err) => {}}
+      FallbackComponent={null}
+      onError={(err) => {
+        console.log(err);
+      }}
     >
-      <Boundary fallback={<Loader />}>
+      <Boundary FallbackComponent={ErrorFallback} fallback={<PageLoad />}>
+        {/* // <ErrorBoundary> */}
         <ThemeProvider theme={theme}>
           <Load />
           {/* router */}
@@ -73,6 +67,7 @@ function App() {
             </RootStoreProvider>
           </HashRouter>
         </ThemeProvider>
+        {/* // </ErrorBoundary> */}
       </Boundary>
     </BoundaryConfigProvider>
   );

@@ -1,12 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { Box, Card, CardContent, Typography, Chip } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { useTrainDetail } from "services/useHooks";
 
-const TrainDetailCredit = ({ detail }) => {
-  const { id } = useParams();
-  const { data } = useTrainDetail({ variables: { id } });
-  const { courseTypeList } = data.data;
+const TrainDetailCredit = ({ course }) => {
+  const { courseTypeList = [] } = course;
   return (
     <Box>
       {courseTypeList?.map((el, i) => (

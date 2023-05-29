@@ -35,17 +35,16 @@ const MainLayout = observer(() => {
     filterRoute(AllRoute, m);
     changeMenuEnum(m);
   }
+
   return token ? (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
         width: "100%",
         height: "100vh",
       }}
     >
       <Header />
-      <Box component="main" sx={{ width: "100%", flexGrow: 1 }}>
+      <Box component="main" sx={{ width: "100%", height: "calc(100% - 64px)" }}>
         <Outlet />
       </Box>
     </Box>

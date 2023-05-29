@@ -20,6 +20,7 @@ import { ajax } from "request/index";
 import md5 from "js-md5";
 import { setToken, setUserInfo } from "utils/token";
 import { LoadingRef } from "utils/Loading";
+import { NoticeRef } from "utils/Notice";
 
 function Copyright(props) {
   return (
@@ -41,8 +42,8 @@ const In = observer(() => {
   // form validation
   const formContext = useForm({
     defaultValues: {
-      username: "320831199712073819",
-      password: "Aa123456!",
+      username: "321085198006060019",
+      password: "123456",
     },
     mode: "all",
   });
@@ -68,7 +69,16 @@ const In = observer(() => {
           message: "登录成功",
           type: "success",
         });
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 100);
+      })
+      .catch((e) => {
+        const { code } = e;
+        const m = {
+          ERR_NETWORK: "网络发生了点小问题，请检查网络连接是否正常！",
+        };
+        NoticeRef.current?.open({ message: m[code], type: "error" });
       })
       .finally(() => {
         LoadingRef.current.close();

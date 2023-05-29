@@ -11,13 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useMatch,
-  useMatches,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRootStore } from "store/index";
 import { observer } from "mobx-react";
 import { removeToken } from "utils/token";
@@ -83,7 +77,7 @@ const ResponsiveAppBar = observer(() => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="设置">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={userInfo.avatar} />
+                <Avatar src={userInfo.avatar} />
               </IconButton>
             </Tooltip>
             <Menu

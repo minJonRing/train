@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -11,26 +11,33 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
-import { useTrainDetail } from "services/useHooks";
+import { useNavigate } from "react-router-dom";
+import { NoticeRef } from "utils/Notice";
 
 import dayjs from "dayjs";
 
 import { BookOutlined } from "@ant-design/icons";
 
-const TrainDetailResource = () => {
-  const { id } = useParams();
-  const { data } = useTrainDetail({ variables: { id } });
+const TrainDetailResource = ({ course }) => {
   const navigate = useNavigate();
   const {
     courseId,
-    courseResponse: { resourceList, startTime, endTime },
-  } = data.data;
+    courseResponse: { resourceList, startTime, endTime, timeout } = {
+      resourceList: [],
+    },
+    state,
+  } = course;
+  console.log(course);
+
   const learn = dayjs(Date()).isBetween(
     dayjs(startTime, "YYYY-MM-DD HH:mm:ss"),
     dayjs(endTime, "YYYY-MM-DD HH:mm:ss")
   );
-  console.log(resourceList);
+  if (!learn) {
+    NoticeRef?.current.open({ message: "该课程已结束", type: "error" });
+    navigate(-1);
+  }
+
   return (
     <Card variant="outlined" sx={{ mt: 1 }}>
       <CardHeader avatar={<BookOutlined />} title="学习资料" />
@@ -41,7 +48,10 @@ const TrainDetailResource = () => {
               <ListItem>
                 <ListItemButton
                   disabled={!learn}
-                  onClick={() => navigate(`/train/${courseId}/${el.id}`)}
+                  // disabled={!learn || state !== 5}
+                  onClick={() =>
+                    navigate(`/train/${courseId}/${el.id}?timeout=${timeout}`)
+                  }
                 >
                   <Box sx={{ width: "100%" }}>
                     <Typography component="div">

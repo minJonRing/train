@@ -1,54 +1,60 @@
-import * as React from "react";
-import { Box } from "@mui/material";
+import React, { useMemo } from "react";
+import { Box, Card, CardContent, Typography, Chip } from "@mui/material";
 
 import LoadScript from "utils/LoadScript";
-import { createRef } from "react";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { ajax } from "request/index";
 import { NoticeRef } from "utils/Notice";
+import { useIdle, usePageLeave } from "./util/index";
+import DoneIcon from "@mui/icons-material/Done";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+
 //
 
-const Play = ({ videoInfo }) => {
+const Play = ({ title, isComplete: complete, rate: r, videoInfo, timeout }) => {
   const { id, videoId } = useParams();
-
   const videoRef = useRef(null);
   const mouseRef = useRef(null);
-  // 鼠标多长时间不操作 暂停视频播放
-  let moveInterval = null;
-  const [pauseTime, changePauseTime] = useState(30);
-  const [moveTime, setMoveTime] = useState(0);
-  const moveTimeRef = useRef(moveTime);
-  moveTimeRef.current = moveTime;
-  const handleMouseMove = (e) => {
-    setMoveTime(0);
-    clearInterval(moveInterval);
-    moveInterval = setInterval(() => {
-      const v = moveTimeRef.current + 1;
-      setMoveTime(v);
-    }, 1000);
-  };
-  // 观看时间
+  /**
+   * 进度
+   */
+  const [rate, setRate] = useState(r);
+  const [isComplete, setIsComplete] = useState(!!complete);
+  /**
+   * 鼠标暂停时间
+   */
+  const { stop } = useIdle(timeout);
+
+  /**
+   * 判断是否离开页面
+   */
+  const { leave } = usePageLeave();
+  /**
+   * 是否可以上传接口
+   */
+  const canRequestUpdateTime = useMemo(() => {
+    return !stop && !leave;
+  }, [stop, leave]);
+  /**
+   * 无法上传环境时，暂停播放
+   */
+  useEffect(() => {
+    if (!canRequestUpdateTime) {
+      videoRef.current?.pause();
+    }
+  }, [canRequestUpdateTime]);
   //
   const [updateTime, changeUpdateTime] = useState(0);
 
   useEffect(() => {
     init();
-    mouseRef.current?.addEventListener("mousemove", handleMouseMove);
     return () => {
-      mouseRef.current?.removeEventListener("mousemove", handleMouseMove);
       videoRef.current?.on("timeupdate", handlePlayUpdateTime);
       videoRef.current?.on("ended", onVideoEnded);
     };
   }, []);
-
-  // 监听鼠标静止时间
-  useEffect(() => {
-    if (moveTime >= pauseTime) {
-      videoRef.current?.pause();
-    }
-  }, [moveTime]);
 
   // 初始化视频
   const init = () => {
@@ -175,7 +181,6 @@ const Play = ({ videoInfo }) => {
       ajax({
         url: "/personnelVideoWatch",
         method: "post",
-        noLoading: true,
         data: {
           videoId,
           seek: time,
@@ -187,9 +192,10 @@ const Play = ({ videoInfo }) => {
           if (!data) {
             return;
           }
-          const { value } = data;
-          const { isComplete } = value || {};
-          if (value && isComplete === 1) {
+          const { isComplete, rate } = data;
+          setRate(rate);
+          if (isComplete === 1) {
+            setIsComplete(1);
             NoticeRef.current?.open({
               message: "您已完成本课程学习",
               type: "success",
@@ -201,6 +207,8 @@ const Play = ({ videoInfo }) => {
         });
     }
   };
+
+  // 1分钟记录一次观看时间
   const handlePlayUpdateTime = (() => {
     let timeSlot = false;
     let time = 0;
@@ -212,7 +220,7 @@ const Play = ({ videoInfo }) => {
         handlePlayUpdateTImeImmediate();
         timeSlot = false;
       } else {
-        if (time >= 6) {
+        if (time >= 60) {
           timeSlot = true;
           time = 0;
         }
@@ -225,16 +233,38 @@ const Play = ({ videoInfo }) => {
   };
 
   return (
-    <Box ref={mouseRef} id="player-box" sx={{ height: "100%" }}>
-      <video
-        ref={videoRef}
-        id="player"
-        webkit-playsinline="true"
-        x-webkit-airplay="allow"
-        x5-video-player-type="h5"
-        x5-video-player-fullscreen="true"
-        style={{ height: "100%", overflow: "hidden" }}
-      />
+    <Box sx={{ height: "100%" }}>
+      <Card sx={{ mb: 1 }}>
+        <CardContent
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            p: "8px !important",
+          }}
+        >
+          <Typography variant="h6" className="over" color="text.secondary">
+            {title}
+          </Typography>
+          <Chip
+            label={rate}
+            color={isComplete ? "success" : "warning"}
+            icon={isComplete ? <DoneIcon /> : <AutorenewIcon />}
+          />
+        </CardContent>
+      </Card>
+      <Box sx={{ height: "calc(100% - 60px)" }}>
+        <Box ref={mouseRef} id="player-box">
+          <video
+            ref={videoRef}
+            id="player"
+            webkit-playsinline="true"
+            x-webkit-airplay="allow"
+            x5-video-player-type="h5"
+            x5-video-player-fullscreen="true"
+            style={{ height: "100%", overflow: "hidden" }}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

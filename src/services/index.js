@@ -39,6 +39,14 @@ export const signExam = (data) =>
     url: `/examStatistic/examScheduleCount`,
     method: "get",
   });
+// 我的证书
+
+export const getCertificateInfo = (data) =>
+  ajax({
+    url: `exam/personnel/paper/mock/getCertificateInfo`,
+    method: "get",
+    data,
+  });
 // train
 // 课程
 export const train = (data) =>
@@ -73,14 +81,24 @@ export const exam = (data) =>
     method: "get",
   });
 
+// 获取模拟卷列表
 export const getExamPaper = (data) =>
   ajax({
     url: `/exam/personnel/paper/mock/list/${data.id}`,
     method: "get",
   });
+
+// 获取模拟卷详情
 export const getExamPaperDetail = (data) =>
   ajax({
     url: `/exam/personnel/paper/mock/${data.id}`,
+    method: "get",
+  });
+
+// 获取模拟卷答案
+export const getExamPaperAnswerDetail = (data) =>
+  ajax({
+    url: `/exam/personnel/paper/mock/answer/${data.id}`,
     method: "get",
   });
 
@@ -93,6 +111,7 @@ export default {
   nextExam,
   signTrain,
   signExam,
+  getCertificateInfo,
   // train
   train,
   trainDetail,
@@ -102,4 +121,5 @@ export default {
   exam,
   getExamPaper,
   getExamPaperDetail,
+  getExamPaperAnswerDetail,
 };

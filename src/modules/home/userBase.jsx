@@ -1,7 +1,7 @@
 import React from "react";
 import { useRootStore } from "store/index";
-import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -38,7 +38,9 @@ const UserBase = observer(() => {
         <Button variant="contained" onClick={() => navigate("/exam")}>
           我的考试
         </Button>
-        <Button variant="contained">开票管理</Button>
+        <Button disabled variant="contained">
+          开票管理
+        </Button>
       </CardActions>
     </Card>
   );

@@ -10,6 +10,8 @@ import {
   Chip,
   Divider,
 } from "@mui/material";
+import ImageIcon from "@mui/icons-material/Image";
+
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -45,16 +47,39 @@ const TrainItem = ({ el }) => {
       {thumbnail ? (
         <CardMedia sx={{ height: 160 }} image={thumbnail} title="封面" />
       ) : (
-        <Box></Box>
+        <Box
+          sx={{
+            height: 160,
+            backgroundColor: "#f9f9f9",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <Box>
+            <ImageIcon fontSize="large" />
+            <Typography>暂无封面</Typography>
+          </Box>
+        </Box>
       )}
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          className="over2"
+          sx={{ height: "65px" }}
+        >
           {title || "未知课程名称"}
         </Typography>
         <Typography
           variant="body2"
+          className="over3"
           color="text.secondary"
-          sx={{ height: "60px" }}
+          sx={{
+            height: "60px",
+          }}
         >
           {description || "未知课程描述"}
         </Typography>

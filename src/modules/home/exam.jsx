@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -6,14 +6,13 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-
 import { HighlightOutlined } from "@ant-design/icons";
 import { useSignExam } from "services/useHooks";
 import { useNavigate } from "react-router-dom";
 
 const Exam = () => {
-  const navigate = useNavigate();
   const { data } = useSignExam();
+  const navigate = useNavigate();
   return (
     <Card variant="outlined" sx={{ height: "235px" }}>
       <CardContent>
@@ -25,7 +24,7 @@ const Exam = () => {
           <span style={{ color: "#1976d2", fontSize: "30px" }}>
             {data?.data || 0}
           </span>{" "}
-          场
+          {/* 场 */}
         </Typography>
       </CardContent>
       <CardActions

@@ -1,22 +1,76 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useRootStore } from "store/index";
+import { observer } from "mobx-react";
 import {
   Box,
-  Divider,
   Card,
-  CardMedia,
   CardHeader,
   CardContent,
-  CardActions,
   Typography,
-  Button,
+  AppBar,
+  Tabs,
+  Tab,
+  Skeleton,
 } from "@mui/material";
-
 import { FileProtectOutlined } from "@ant-design/icons";
-import { useTrain } from "services/useHooks";
-import zs from "assets/images/mb.jpg";
+import { ajax } from "request/index";
+import { getCertificateInfo } from "services/index";
+import CertificateTemp from "./temp/certificate";
 
-const Certificate = () => {
-  const { data } = useTrain();
+const Certificate = observer(() => {
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
+    };
+  }
+
+  // 证书数据
+  const [load, setLoad] = useState(false);
+  const [certificate, setCertificate] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
+  // tabs 切换
+  const [tabValue, setTabValue] = useState(0);
+
+  const {
+    zd: { courseType, changeCourseType },
+  } = useRootStore();
+
+  const handleChange = (v) => {
+    handleCertificateInfo(v + 1);
+    setTabValue(v);
+  };
+
+  const handleCertificateInfo = (type) => {
+    // LoadingRef.current.open();
+    setLoad(true);
+    getCertificateInfo({ courseType: type })
+      .then(({ data }) => {
+        const d = data ? data[0] : {};
+        setCertificate(d);
+      })
+      .catch((e) => {
+        setCertificate({});
+        setErrorMsg(e);
+      })
+      .finally(() => {
+        // LoadingRef.current.close();
+        setLoad(false);
+      });
+  };
+
+  useEffect(() => {
+    ajax({
+      url: "/dictCourseType",
+      method: "get",
+    }).then(({ data }) => {
+      changeCourseType(
+        data.map(({ id, name }) => ({ value: id, label: name }))
+      );
+      handleCertificateInfo(data[0]?.id);
+    });
+  }, []);
+
   return (
     <Card variant="outlined">
       <CardHeader
@@ -24,48 +78,42 @@ const Certificate = () => {
         title="我的证书"
       />
       <CardContent>
-        <Box sx={{ display: "flex" }}>
-          {(data?.data.data || []).map((el) => (
-            <Card key={el.id} sx={{ m: 1, position: "relative" }}>
-              <CardMedia sx={{ height: 140 }} image={zs} title="证书" />
-              <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h6"
-                  sx={{
-                    width: "240px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    mb: 0,
-                  }}
-                >
-                  {el.courseResponse.title}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ opacity: 0 }}>
-                <Button size="small">证书下载</Button>
-              </CardActions>
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  width: "100%",
-                }}
-              >
-                <Divider />
-                <CardActions>
-                  <Button fullWidth size="small">
-                    证书下载
-                  </Button>
-                </CardActions>
-              </Box>
-            </Card>
-          ))}
+        <AppBar position="static" color="default">
+          <Tabs
+            value={tabValue}
+            onChange={(e, d) => handleChange(d)}
+            variant="fullWidth"
+            aria-label="action tabs example"
+          >
+            {courseType.map((e, i) => {
+              return <Tab label={e.label} {...a11yProps(i)} key={e.value} />;
+            })}
+          </Tabs>
+        </AppBar>
+        <Box sx={{ padding: "1rem 0" }}>
+          {load ? (
+            <Box flex>
+              <Skeleton height={60} />
+              <Skeleton height={60} />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </Box>
+          ) : !!Object.keys(certificate).length ? (
+            <CertificateTemp historyTrain={certificate} />
+          ) : (
+            <Typography
+              component="div"
+              role="tabpanel"
+              sx={{ textAlign: "center" }}
+            >
+              {errorMsg}
+            </Typography>
+          )}
         </Box>
       </CardContent>
     </Card>
   );
-};
+});
 
 export default Certificate;

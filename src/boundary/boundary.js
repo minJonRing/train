@@ -7,9 +7,7 @@ export const Boundary = (props) => {
 
   return (
     <ErrorBoundary {...rest}>
-      <Suspense {...(fallback === undefined ? {} : { fallback })}>
-        {children}
-      </Suspense>
+      <Suspense fallback={fallback}>{children}</Suspense>
     </ErrorBoundary>
   );
 };

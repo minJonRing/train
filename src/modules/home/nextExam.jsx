@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 import { InfoCircleOutlined } from "@ant-design/icons";
 
@@ -24,7 +18,7 @@ const NextExam = () => {
         `您最近将会参加一场【${url}】的考试，于【${startTime}】开始,请提前准备!`
       );
     }
-  }, []);
+  }, [data]);
   return (
     <Card
       variant="outlined"

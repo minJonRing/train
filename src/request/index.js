@@ -16,11 +16,50 @@ export const ajax = (option = {}) => {
 };
 
 export const useAjax = (option) => {
-  const [data, changeData] = useState();
-  !data &&
-    ajax(option).then(({ data }) => {
-      changeData(data);
-    });
+  const [data, setData] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCatch, setIsCatch] = useState(false);
+  isLoading &&
+    ajax(option)
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        setData(err);
+        setIsCatch(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  return {
+    data,
+    isLoading,
+    isCatch,
+  };
+};
 
-  return { data };
+export const useAjaxSync = (initUrl) => {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCatch, setIsCatch] = useState(false);
+  return (option) => {
+    const { url } = option;
+    const u = url || initUrl;
+    ajax({ ...option, url: u })
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        setData(err);
+        setIsCatch(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+    return {
+      data,
+      isLoading,
+      isCatch,
+    };
+  };
 };

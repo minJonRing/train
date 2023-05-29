@@ -13,19 +13,13 @@ import {
   Divider,
 } from "@mui/material";
 
-const ExamPaperItem = observer(() => {
+const ExamPaperItem = observer(({ setActive }) => {
   const {
     user: { userInfo },
   } = useRootStore();
+  console.log(userInfo);
   return (
     <Card variant="outlined">
-      {/* <CardMedia
-        component="img"
-        height="140"
-        image={userInfo.avatar}
-        alt="头像"
-        sx={{}}
-      /> */}
       <Box>
         <Avatar
           alt="头像"
@@ -48,10 +42,10 @@ const ExamPaperItem = observer(() => {
       </CardContent>
       <Divider />
       <CardActions>
-        <Button fullWidth size="medium">
+        <Button fullWidth size="medium" onClick={() => setActive("info")}>
           基本信息
         </Button>
-        <Button fullWidth size="medium">
+        <Button fullWidth size="medium" onClick={() => setActive("phone")}>
           证件照
         </Button>
       </CardActions>

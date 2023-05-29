@@ -2,24 +2,20 @@ import React from "react";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { ErrorBoundary as BaseErrorBoundary } from "react-error-boundary";
 import { useBoundaryConfig } from "./boundary-config-provider";
+import ErrorPage from "./error-page/index";
 
 export const ErrorBoundary = (props) => {
-  const {
-    children,
-    ignoreOnError = false,
-    FallbackComponent: FallbackComponentProp,
-    ...rest
-  } = props;
+  const { children, FallbackComponent, ...rest } = props;
 
-  const { FallbackComponent, onError } = useBoundaryConfig();
+  const { FallbackComponent: Fallback, onError } = useBoundaryConfig();
   const { reset } = useQueryErrorResetBoundary();
 
   return (
     <BaseErrorBoundary
       onReset={reset}
       onResetKeysChange={reset}
-      FallbackComponent={FallbackComponentProp || FallbackComponent}
-      {...(ignoreOnError ? {} : { onError })}
+      FallbackComponent={FallbackComponent || Fallback}
+      {...{ onError }}
       {...rest}
     >
       {children}
@@ -28,11 +24,5 @@ export const ErrorBoundary = (props) => {
 };
 
 export const ErrorFallback = (props) => {
-  const { error, resetErrorBoundary, ...rest } = props;
-
-  return (
-    <button size="sm" onClick={resetErrorBoundary}>
-      重试
-    </button>
-  );
+  return <ErrorPage {...props} />;
 };

@@ -1,11 +1,13 @@
 import User from "./modules/user";
 import System from "./modules/system";
+import Zd from "./modules/zd";
 import { createContext, useContext } from "react";
 
 class Store {
   constructor() {
     this.user = new User();
     this.system = new System();
+    this.zd = new Zd()
   }
 }
 
